@@ -10,8 +10,12 @@ const getTotal = () => {
     return axios.get(url  + '/lib/count')
 }
 
+const getDropDown= (id) => {
+    return axios.get(url + '/dropdown/' + id)
+}
+
 const getMovie = (id) => {
-    return axios.get(url + id)
+    return axios.get(url + '/get/' + id)
 }
 
 const addMovie = (movie) => {
@@ -19,4 +23,4 @@ const addMovie = (movie) => {
 }
 
 
-export default {getAllMovies, getTotal, getMovie, addMovie}
+export default {getAllMovies, getTotal, getDropDown, getMovie, addMovie}

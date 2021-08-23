@@ -11,6 +11,9 @@ import EditIcon from '@material-ui/icons/Edit';
 
 import Button from "@material-ui/core/Button";
 import {makeStyles} from "@material-ui/core/styles";
+import {useEffect, useState} from "react";
+import SubsDAL from "../adapters/SubsDAL";
+import MoviesDAL from "../adapters/MoviesDAL";
 
 const useStyles = makeStyles((theme) => ({
     button: {
@@ -25,19 +28,31 @@ const getInitials = (nameString) => {
     return initials.toUpperCase();
 }
 
-function randomColor() {
-    let hex = Math.floor(Math.random() * 0xFFFFFF);
-    let color = "#" + hex.toString(16);
 
-    return color;
-}
 
 export default function MemberComp(props) {
 
-    const [age, setAge] = React.useState('');
+    const [dropDown, setDropDown] = useState([])
+    const [subs, setSubs] = useState([])
 
-    const handleChange = (event) => {
-        setAge(event.target.value);
+
+    useEffect(async () => {
+
+        const response = await MoviesDAL.getDropDown(props.member._id)
+        const respSubs = await SubsDAL.getSubs(props.member._id)
+
+
+        setDropDown(response.data)
+        setSubs(respSubs.data)
+    },[props.member._id])
+
+    const handleChange = async (event) => {
+        let obj = {
+            memberId: props.member._id,
+            movieId: event.target.value,
+            date: new Date().toString()
+        }
+        await SubsDAL.addSubs(obj)
     };
 
 
@@ -46,9 +61,9 @@ export default function MemberComp(props) {
         <Card sx={{maxWidth: 100}}>
             <CardHeader
                 avatar={
-                    <Avatar aria-label="recipe"
+                    <Avatar aria-label="member"
                             style={{
-                                backgroundColor: randomColor()
+                                backgroundColor: props.color
                             }}>
                         {getInitials(props.member.name)}
                     </Avatar>
@@ -69,24 +84,36 @@ export default function MemberComp(props) {
                         </AccordionSummary>
                         <AccordionDetails>
                             <Typography>
-                                <InputLabel id="demo-simple-select-outlined-label">Age</InputLabel>
+                                <InputLabel id="Movie">Movie</InputLabel>
                                 <Select
-                                    labelId="demo-simple-select-outlined-label"
-                                    id="demo-simple-select-outlined"
-                                    value={age}
+                                    labelId="Movie"
+                                    id="Movie"
+                                    value={dropDown}
                                     onChange={handleChange}
-                                    label="Age"
+                                    label="Movie"
                                 >
                                     <MenuItem value="">
                                         <em>None</em>
                                     </MenuItem>
-                                    <MenuItem value={10}>Ten</MenuItem>
-                                    <MenuItem value={20}>Twenty</MenuItem>
-                                    <MenuItem value={30}>Thirty</MenuItem>
+                                    {
+                                        dropDown.map((movie, index) => {
+                                            return(
+                                                <MenuItem value={movie._id}>{movie.name}</MenuItem>
+                                            )
+                                        })
+                                    }
+
                                 </Select>
                             </Typography>
                         </AccordionDetails>
                     </Accordion>
+
+                    { subs &&
+                        subs.movies.map((s,i) => {
+                            return <div key={i}>{s.movieId}</div>
+                        })
+                    }
+
                 </Typography>
                 <br/>
                 <Button
