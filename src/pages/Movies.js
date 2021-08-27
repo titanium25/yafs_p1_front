@@ -50,6 +50,7 @@ function Movies() {
                 height: '90vh'
             }}>
             <h1>Movies</h1>
+            <br/>
             <TextField
                 id="Search"
                 label="Search"

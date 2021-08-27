@@ -14,8 +14,4 @@ const getSubs= (id) => {
     return axios.get(url + '/get/' + id)
 }
 
-
-
-
-
 export default {getAllSubs, addSubs, getSubs}
