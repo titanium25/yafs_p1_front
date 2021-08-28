@@ -22,5 +22,9 @@ const addMovie = (movie) => {
     return axios.post(url, movie)
 }
 
+const deleteMovie = (id) => {
+    return axios.delete(url + '/' + id)
+}
 
-export default {getAllMovies, getTotal, getDropDown, getMovie, addMovie}
+
+export default {getAllMovies, getTotal, getDropDown, getMovie, addMovie, deleteMovie}

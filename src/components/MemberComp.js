@@ -55,7 +55,6 @@ export default function MemberComp(props) {
 
     const handleSub = () => {
         setAnchorEl(null);
-        // return <AddMovieToSub list={dropDown} id={props.member._id} />
 
     };
 
@@ -92,7 +91,7 @@ export default function MemberComp(props) {
             <CardContent>
                 <AddMovieToSub list={dropDown} id={props.member._id} />
 
-                <Typography variant="body2" color="text.secondary">
+                <Typography component={'span'} variant="body2" color="textPrimary">
                     {
                         subs.movies &&
                         subs.movies.map((m, i) => {

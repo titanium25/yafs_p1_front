@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -8,17 +8,33 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import {Rating} from "@material-ui/lab";
+import SubsDAL from "../adapters/SubsDAL";
+import MemberList from "./MemberList";
+import EditIcon from "@material-ui/icons/Edit";
+import DeleteIcon from "@material-ui/icons/Delete";
+import MovieDelete from "./MovieDelete";
 
-const useStyles = makeStyles({
+
+const useStyles = makeStyles(theme =>({
     root: {
         maxWidth: 345,
     },
     media: {
         height: 350,
     },
-});
+    button: {
+        margin: theme.spacing(1),
+    },
+}));
 
-function Movies(props) {
+function MoviesComp(props) {
+
+    const [memberList, setMemberList] = useState([])
+
+    useEffect(async () => {
+        const memberList = await SubsDAL.getMemberList(props.movie._id)
+        setMemberList(memberList.data)
+    },[props.movie._id])
 
     const classes = useStyles();
 
@@ -42,16 +58,24 @@ function Movies(props) {
                         Premiered: {props.movie.premiered}
                     </Typography>
 
+                    {
+                        memberList &&
+                        <MemberList list={memberList} />
+                    }
 
                 </CardContent>
             </CardActionArea>
             <CardActions>
-                <Button size="small" color="primary">
-                    Share
+                <Button
+                    variant="outlined"
+                    color="primary"
+                    className={classes.button}
+                    startIcon={<EditIcon/>}
+                >
+                    Edit
                 </Button>
-                <Button size="small" color="primary">
-                    Learn More
-                </Button>
+
+                <MovieDelete movie={props.movie} />
             </CardActions>
         </Card>
             <br/>
@@ -59,4 +83,4 @@ function Movies(props) {
     );
 }
 
-export default Movies;
+export default MoviesComp;

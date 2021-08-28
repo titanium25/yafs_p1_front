@@ -7,6 +7,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
+import {IconButton, ListItemSecondaryAction} from "@material-ui/core";
+import DeleteIcon from "@material-ui/icons/Delete";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -23,12 +25,12 @@ const useStyles = makeStyles((theme) => ({
 },
 }));
 
-export default function AlignItemsList(props) {
+export default function MovieSubsList(props) {
     const classes = useStyles();
 
     return (
         <List className={classes.root}>
-            <ListItem alignItems="flex-start">
+            <ListItem alignItems="flex-start" button>
                 <ListItemAvatar>
                     <Avatar variant="square" className={classes.large} src={props.movies.image} />
                 </ListItemAvatar>
@@ -48,6 +50,11 @@ export default function AlignItemsList(props) {
                         </React.Fragment>
                     }
                 />
+                <ListItemSecondaryAction>
+                    <IconButton edge="end" aria-label="delete">
+                        <DeleteIcon />
+                    </IconButton>
+                </ListItemSecondaryAction>
             </ListItem>
             <Divider variant="inset" component="li" />
 

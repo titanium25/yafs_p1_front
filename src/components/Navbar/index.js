@@ -12,21 +12,21 @@ const Navbar = () => {
     return (
         <>
             <Nav>
-                <NavLink to='/'>
+                <NavLink to='/' >
                     <img src={require('../../images/logo_150.png').default} alt='logo' />
                 </NavLink>
                 <Bars />
                 <NavMenu>
-                    <NavLink to='/movies' activeStyle>
+                    <NavLink to='/movies' >
                         Movies
                     </NavLink>
-                    <NavLink to='/members' activeStyle>
+                    <NavLink to='/members' >
                         Members
                     </NavLink>
-                    <NavLink to='/contact-us' activeStyle>
+                    <NavLink to='/contact-us' >
                         Contact Us
                     </NavLink>
-                    <NavLink to='/sign-up' activeStyle>
+                    <NavLink to='/sign-up' >
                         Sign Up
                     </NavLink>
                 </NavMenu>

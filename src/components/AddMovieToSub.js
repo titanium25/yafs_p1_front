@@ -61,9 +61,9 @@ export default function AddMovieToSub(props) {
                 <DialogContent>
                     <form className={classes.container}>
                         <FormControl className={classes.formControl}>
-                            <InputLabel htmlFor="movie">Movie</InputLabel>
+                            <InputLabel id="movie">Movie</InputLabel>
                             <Select
-
+                                labelId="movie"
                                 value={movie}
                                 onChange={(event) => setMovie(event.target.value)}
                                 input={<Input id="movie"/>}

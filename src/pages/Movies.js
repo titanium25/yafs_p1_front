@@ -1,12 +1,11 @@
 import MoviesDAL from '../adapters/MoviesDAL';
-import Movie from '../components/MovieComp'
-
+import MovieComp from '../components/MovieComp'
 import Pagination from '@material-ui/lab/Pagination';
-
-
 import {useEffect, useState} from "react";
 import {Grid, TextField} from "@material-ui/core";
 import {ToggleButton, ToggleButtonGroup} from "@material-ui/lab";
+
+
 
 function Movies() {
     const [movies, setMovies] = useState([])
@@ -16,12 +15,12 @@ function Movies() {
     const [search, setSearch] = useState('')
     const [alignment, setAlignment] = useState('center');
 
-
     useEffect(async () => {
 
         // Get total number of movies from the server. Needed for pagination
         let responseTotal = await MoviesDAL.getTotal()
         setTotal(responseTotal.data)
+
 
         if (search) {
             let response = await MoviesDAL.getAllMovies(page, size, true)
@@ -78,7 +77,7 @@ function Movies() {
                                       onClick={() => setSize(12)}>12</ToggleButton>
                     </ToggleButtonGroup>
                     <br/> <br/>
-                    <Pagination variant="outlined" shape="rounded" count={total / size} onChange={handleChange}/>
+                    <Pagination variant="outlined" shape="rounded" count={~~(total / size)} onChange={handleChange}/>
 
                 </div>
 
@@ -96,7 +95,7 @@ function Movies() {
                     movies.map((movie, index) => {
                         return (
                             <Grid item xs={12} sm={6} md={3} key={index}>
-                                <Movie key={index} movie={movie}/>
+                                <MovieComp key={index} movie={movie}/>
                             </Grid>)
                     })
                 }
