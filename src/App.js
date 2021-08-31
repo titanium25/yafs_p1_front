@@ -4,16 +4,17 @@ import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import Movies from './pages/Movies'
 import Members from './pages/Members';
 import Contact from './pages/contact';
+import MovieData from "./pages/MovieData";
 
 function App() {
 
     return (
         <Router>
             <Navbar/>
-            <div style={{padding: '70px'}}>
+            <div id="inner">
                 <Switch>
-                    <Route path='/' exact component={Movies}/>
-                    <Route path='/movies' component={Movies}/>
+                    <Route path='/' exact component={MovieData}/>
+                    <Route path='/movies' component={MovieData}/>
                     <Route path='/members' component={Members}/>
                     {/*<Route path='/services' component={Services} />*/}
                     <Route path='/contact-us' component={Contact}/>

@@ -14,7 +14,7 @@ import SubsDAL from "../adapters/SubsDAL";
 import MoviesDAL from "../adapters/MoviesDAL";
 import AddMovieToSub from './AddMovieToSub'
 import MovieSubsList from './MovieSubsList'
-import {IconButton, Menu, MenuItem} from "@material-ui/core";
+import {CircularProgress, IconButton, Menu, MenuItem} from "@material-ui/core";
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 const useStyles = makeStyles((theme) => ({
@@ -36,7 +36,7 @@ export default function MemberComp(props) {
     const classes = useStyles();
     const [dropDown, setDropDown] = useState([])
     const [subs, setSubs] = useState([])
-    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [anchorEl, setAnchorEl] = useState(null);
 
     useEffect(async () => {
         const respMovies = await MoviesDAL.getDropDown(props.member._id)
@@ -55,8 +55,12 @@ export default function MemberComp(props) {
 
     const handleSub = () => {
         setAnchorEl(null);
-
     };
+
+    const progress = () => {
+        if(subs.movies === [] )
+       return <CircularProgress />
+    }
 
     return (
         <Card sx={{maxWidth: 100}}>
@@ -90,15 +94,15 @@ export default function MemberComp(props) {
             </Menu>
             <CardContent>
                 <AddMovieToSub list={dropDown} id={props.member._id} />
+                <br/>
 
-                <Typography component={'span'} variant="body2" color="textPrimary">
                     {
-                        subs.movies &&
+                        subs.movies === undefined ? <CircularProgress /> :
                         subs.movies.map((m, i) => {
                             return <MovieSubsList key={i} movies={m} />
                         })
                     }
-                </Typography>
+
                 <br/>
                 <Button
                     variant="outlined"

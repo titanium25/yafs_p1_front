@@ -2,18 +2,23 @@ import MoviesDAL from '../adapters/MoviesDAL';
 import MovieComp from '../components/MovieComp'
 import Pagination from '@material-ui/lab/Pagination';
 import {useEffect, useState} from "react";
-import {Grid, TextField} from "@material-ui/core";
+import {CircularProgress, Grid, TextField} from "@material-ui/core";
 import {ToggleButton, ToggleButtonGroup} from "@material-ui/lab";
+import MovieSubsList from "../components/MovieSubsList";
+import * as React from "react";
 
 
 
-function Movies() {
+function Movies(props) {
     const [movies, setMovies] = useState([])
+    const [allMovies, setAllMovies] = useState([])
     const [page, setPage] = useState(1);
     const [size, setSize] = useState(8);
     const [total, setTotal] = useState(0)
     const [search, setSearch] = useState('')
     const [alignment, setAlignment] = useState('center');
+
+    const [toggleRerender, setToggleRerender] = useState(false)
 
     useEffect(async () => {
 
@@ -21,10 +26,10 @@ function Movies() {
         let responseTotal = await MoviesDAL.getTotal()
         setTotal(responseTotal.data)
 
+        setAllMovies(props.allMovies)
 
         if (search) {
-            let response = await MoviesDAL.getAllMovies(page, size, true)
-            setMovies(response.data.filter(x => x.name.toLowerCase().includes(search)))
+            setMovies(allMovies.filter(x => x.name.toLowerCase().includes(search)))
         } else {
             // Get chunk of movies from the server
             let response = await MoviesDAL.getAllMovies(page, size)
@@ -40,7 +45,6 @@ function Movies() {
         setAlignment(newAlignment);
     };
 
-
     return (
         <div
             style={{
@@ -50,18 +54,19 @@ function Movies() {
             }}>
             <h1>Movies</h1>
             <br/>
-            <TextField
-                id="Search"
-                label="Search"
-                variant="outlined"
-                onChange={e => setSearch(e.target.value.toLowerCase())}
-            />
+                    <TextField
+                        id="Search"
+                        label="Search"
+                        variant="outlined"
+                        type="Search"
+                        onChange={e => setSearch(e.target.value.toLowerCase())}
+                    />
 
             {
                 search.length > 0 ||
                 <div>
 
-                    <br/>
+                    <br/>View
                     <ToggleButtonGroup
                         value={alignment}
                         size={'small'}
@@ -95,7 +100,11 @@ function Movies() {
                     movies.map((movie, index) => {
                         return (
                             <Grid item xs={12} sm={6} md={3} key={index}>
-                                <MovieComp key={index} movie={movie}/>
+                                <MovieComp
+                                    key={index}
+                                    movie={movie}
+                                    rerenderParentCallback={() => props.rerenderParentCallback()}
+                                />
                             </Grid>)
                     })
                 }

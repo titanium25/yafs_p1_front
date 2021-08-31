@@ -26,5 +26,9 @@ const deleteMovie = (id) => {
     return axios.delete(url + '/' + id)
 }
 
+const editMovie = (id, obj) => {
+    return axios.put(url + '/' + id, obj)
+}
 
-export default {getAllMovies, getTotal, getDropDown, getMovie, addMovie, deleteMovie}
+
+export default {getAllMovies, getTotal, getDropDown, getMovie, addMovie, deleteMovie, editMovie}
