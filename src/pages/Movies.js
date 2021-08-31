@@ -1,12 +1,10 @@
 import MoviesDAL from '../adapters/MoviesDAL';
 import MovieComp from '../components/MovieComp'
 import Pagination from '@material-ui/lab/Pagination';
-import {useEffect, useState} from "react";
-import {CircularProgress, Grid, TextField} from "@material-ui/core";
-import {ToggleButton, ToggleButtonGroup} from "@material-ui/lab";
-import MovieSubsList from "../components/MovieSubsList";
 import * as React from "react";
-
+import {useEffect, useState} from "react";
+import {Grid, TextField} from "@material-ui/core";
+import {ToggleButton, ToggleButtonGroup} from "@material-ui/lab";
 
 
 function Movies(props) {
@@ -35,7 +33,7 @@ function Movies(props) {
             let response = await MoviesDAL.getAllMovies(page, size)
             setMovies(response.data)
         }
-    }, [page, size, search])
+    }, [page, size, search, toggleRerender])
 
     const handleChange = (event, value) => {
         setPage(value);
@@ -54,13 +52,13 @@ function Movies(props) {
             }}>
             <h1>Movies</h1>
             <br/>
-                    <TextField
-                        id="Search"
-                        label="Search"
-                        variant="outlined"
-                        type="Search"
-                        onChange={e => setSearch(e.target.value.toLowerCase())}
-                    />
+            <TextField
+                id="Search"
+                label="Search"
+                variant="outlined"
+                type="Search"
+                onChange={e => setSearch(e.target.value.toLowerCase())}
+            />
 
             {
                 search.length > 0 ||
@@ -103,7 +101,7 @@ function Movies(props) {
                                 <MovieComp
                                     key={index}
                                     movie={movie}
-                                    rerenderParentCallback={() => props.rerenderParentCallback()}
+                                    rerenderParentCallback={() => setToggleRerender(!toggleRerender)}
                                 />
                             </Grid>)
                     })
