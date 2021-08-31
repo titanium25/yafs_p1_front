@@ -50,6 +50,11 @@ function MoviesComp(props) {
         props.rerenderParentCallback()
     }
 
+    const handleDelete = async (id) => {
+        await MoviesDAL.deleteMovie(props.movie._id)
+        props.rerenderParentCallback()
+    }
+
     return (
         <div>
             <Card className={classes.root}>
@@ -86,6 +91,7 @@ function MoviesComp(props) {
 
                     <MovieDelete
                         movie={props.movie}
+                        callBack={(obj) => handleDelete(obj)}
                     />
 
                 </CardActions>

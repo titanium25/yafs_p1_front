@@ -22,7 +22,7 @@ export default function MovieDelete(props) {
     };
 
     const handleDelete = async () => {
-        await MoviesDAL.deleteMovie(props.movie._id)
+        props.callBack(props.movie._id)
         setOpen(false);
     };
 
