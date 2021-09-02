@@ -70,7 +70,7 @@ export default function MovieAdd(props) {
         setGenres([])
         setDate(new Date())
         props.callBack(obj)
-        setOpen(false);
+        setOpen(false)
     };
 
 
@@ -91,7 +91,7 @@ export default function MovieAdd(props) {
             >
                 <DialogTitle id="form-dialog-title">Add Movie</DialogTitle>
                 <DialogContent
-                    style={{height: '390px'}}>
+                    style={{height: '360px'}}>
 
                     <TextField
                         id="outlined-basic"

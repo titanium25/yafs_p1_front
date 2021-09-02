@@ -7,12 +7,10 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import {Rating} from "@material-ui/lab";
-import SubsDAL from "../adapters/SubsDAL";
-import MemberList from "./MemberList";
-import MovieDelete from "./MovieDelete";
-import MovieEdit from "./MovieEdit";
-import MoviesDAL from "../adapters/MoviesDAL";
-
+import SubsDAL from "../../adapters/SubsDAL";
+import MemberList from "./Movie/MemberList";
+import MovieDelete from "./Movie/MovieDelete";
+import MovieEdit from "./Movie/MovieEdit";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -26,11 +24,8 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-
-function MoviesComp(props) {
-
+export default function MoviesComp(props) {
     const classes = useStyles();
-
     const [memberList, setMemberList] = useState([])
 
     useEffect(async () => {
@@ -39,20 +34,14 @@ function MoviesComp(props) {
     }, [props.movie._id])
 
     const handleEdit = async (obj) => {
-        await MoviesDAL.editMovie(props.movie._id,
-            {
-                ...props.movie,
-                name: obj.name,
-                rating: obj.rating,
-                genres: obj.genres,
-                premiered: obj.premiered
-            })
-        props.rerenderParentCallback()
-    }
-
-    const handleDelete = async () => {
-        await MoviesDAL.deleteMovie(props.movie._id)
-        props.rerenderParentCallback()
+        const object = {
+            ...props.movie,
+            name: obj.name,
+            rating: obj.rating,
+            genres: obj.genres,
+            premiered: obj.premiered
+        }
+        props.callBackEdit(object)
     }
 
     return (
@@ -83,22 +72,17 @@ function MoviesComp(props) {
                     </CardContent>
                 </CardActionArea>
                 <CardActions>
-
                     <MovieEdit
                         movie={props.movie}
                         callBack={(obj) => handleEdit(obj)}
                     />
-
                     <MovieDelete
                         movie={props.movie}
-                        callBack={() => handleDelete()}
+                        callBack={(id) => props.callBackDelete(id)}
                     />
-
                 </CardActions>
             </Card>
             <br/>
         </div>
     );
 }
-
-export default MoviesComp;

@@ -1,5 +1,5 @@
 import MoviesDAL from '../adapters/MoviesDAL';
-import MovieComp from '../components/MovieComp'
+import MovieComp from '../components/Movies/MovieComp'
 import Pagination from '@material-ui/lab/Pagination';
 import * as React from "react";
 import {useEffect, useState} from "react";
@@ -8,7 +8,7 @@ import {ToggleButton, ToggleButtonGroup} from "@material-ui/lab";
 import {makeStyles} from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
-import MovieAdd from "../components/MovieAdd";
+import MovieAdd from "../components/Movies/MovieAdd";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -28,7 +28,6 @@ const useStyles = makeStyles((theme) => ({
 
 function Movies(props) {
     const classes = useStyles();
-
     const [movies, setMovies] = useState([])
     const [allMovies, setAllMovies] = useState([])
     const [page, setPage] = useState(1);
@@ -36,7 +35,6 @@ function Movies(props) {
     const [total, setTotal] = useState(0)
     const [search, setSearch] = useState('')
     const [alignment, setAlignment] = useState('center');
-
     const [toggleRerender, setToggleRerender] = useState(false)
 
     useEffect(async () => {
@@ -65,18 +63,22 @@ function Movies(props) {
     };
 
     const handleAdd = async (obj) => {
-        console.log(obj)
-
-        await MoviesDAL.addMovie(
-            {
-                name: obj.name,
-                rating: obj.rating,
-                genres: obj.genres,
-                premiered: obj.premiered,
-                image: obj.image
-            })
-        setToggleRerender(!toggleRerender)
+        await MoviesDAL.addMovie(obj)
         props.rerenderParentCallback()
+        setToggleRerender(!toggleRerender)
+        setAllMovies(props.allMovies)
+    }
+
+    const handleEdit = async (obj) => {
+        await MoviesDAL.editMovie(obj._id, obj)
+        props.rerenderParentCallback()
+        setToggleRerender(!toggleRerender)
+    }
+
+    const handleDelete = async (id) => {
+        await MoviesDAL.deleteMovie(id)
+        props.rerenderParentCallback()
+        setToggleRerender(!toggleRerender)
     }
 
     return (
@@ -134,9 +136,7 @@ function Movies(props) {
             </Grid>
 
             <Divider/>
-            <MovieAdd
-                callBack={(obj) => handleAdd(obj)}
-            />
+            <MovieAdd callBack={(obj) => handleAdd(obj)}/>
             <Divider/>
 
             <Grid
@@ -153,16 +153,15 @@ function Movies(props) {
                                 <MovieComp
                                     key={index}
                                     movie={movie}
-                                    rerenderParentCallback={() => {
-                                        setToggleRerender(!toggleRerender)
-                                        props.rerenderParentCallback()
-                                    }}
+                                    rerenderParentCallback={() => props.rerenderParentCallback()}
+                                    callBackEdit={(obj) => handleEdit(obj)}
+                                    callBackDelete={(id) => handleDelete(id)}
+
                                 />
                             </Grid>)
                     })
                 }
             </Grid>
-
         </div>
     );
 }

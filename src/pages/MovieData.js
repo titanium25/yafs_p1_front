@@ -13,7 +13,7 @@ export default function MovieData() {
 
         const response = await MoviesDAL.getAllMovies(1, 1, true)
         setMovies(response.data)
-
+        setToggleRerender(!toggleRerender)
     }, [toggleRerender])
 
 

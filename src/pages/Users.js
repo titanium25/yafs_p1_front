@@ -6,6 +6,7 @@ import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import MemberAdd from "../components/Members/MemberAdd";
 import {makeStyles} from "@material-ui/core/styles";
+import UserAdd from "../components/Users/User/UserAdd";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -18,14 +19,14 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-function Members() {
+export default function Users() {
     const classes = useStyles();
     const [members, setMembers] = useState([])
     const [toggleRerender, setToggleRerender] = useState(false)
 
     useEffect(async () => {
-        const response = await MembersDAL.getAllMembers()
-        setMembers(response.data)
+        // const response = await MembersDAL.getAllMembers()
+        // setMembers(response.data)
     }, [toggleRerender])
 
     const handleAdd = async (obj) => {
@@ -55,40 +56,38 @@ function Members() {
                 direction="row"
             >
                 <Grid item xs={12}>
-                    <Typography variant="h4">Members</Typography>
+                    <Typography variant="h4">Users</Typography>
                 </Grid>
             </Grid>
 
             <Divider/>
-            <MemberAdd
+            <UserAdd
                 callBack={(obj) => handleAdd(obj)}
             />
             <Divider/>
 
-            <Grid
-                container
-                spacing={2}
-                direction="row"
-                justifyContent="flex-start"
-                alignItems="flex-start"
-            >
-                {
-                    members.map((member, index) => {
-                        return (
-                            <Grid item xs={12} sm={6} md={3} key={index}>
-                                <MemberComp
-                                    key={index}
-                                    member={member}
-                                    rerenderParentCallback={() => setToggleRerender(!toggleRerender)}
-                                    callBackEdit={(obj) => handleEdit(obj)}
-                                    callBackDelete={(id) => handleDelete(id)}
-                                />
-                            </Grid>)
-                    })
-                }
-            </Grid>
+            {/*<Grid*/}
+            {/*    container*/}
+            {/*    spacing={2}*/}
+            {/*    direction="row"*/}
+            {/*    justifyContent="flex-start"*/}
+            {/*    alignItems="flex-start"*/}
+            {/*>*/}
+            {/*    {*/}
+            {/*        members.map((member, index) => {*/}
+            {/*            return (*/}
+            {/*                <Grid item xs={12} sm={6} md={3} key={index}>*/}
+            {/*                    <MemberComp*/}
+            {/*                        key={index}*/}
+            {/*                        member={member}*/}
+            {/*                        rerenderParentCallback={() => setToggleRerender(!toggleRerender)}*/}
+            {/*                        callBackEdit={(obj) => handleEdit(obj)}*/}
+            {/*                        callBackDelete={(id) => handleDelete(id)}*/}
+            {/*                    />*/}
+            {/*                </Grid>)*/}
+            {/*        })*/}
+            {/*    }*/}
+            {/*</Grid>*/}
         </div>
     );
 }
-
-export default Members;

@@ -4,24 +4,23 @@ import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import Avatar from '@material-ui/core/Avatar';
-import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
-
-import Button from "@material-ui/core/Button";
 import {makeStyles} from "@material-ui/core/styles";
-import SubsDAL from "../adapters/SubsDAL";
-import MoviesDAL from "../adapters/MoviesDAL";
-import AddMovieToSub from './AddMovieToSub'
-import MovieSubsList from './MovieSubsList'
-import {CircularProgress, IconButton, Menu, MenuItem} from "@material-ui/core";
+import SubsDAL from "../../adapters/SubsDAL";
+import AddSub from './Member/AddSub'
+import MemberList from './Member/MemberList'
+import {CardActions, CircularProgress, IconButton, Menu, MenuItem} from "@material-ui/core";
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import MemberDelete from "./Member/MemberDelete";
+import MemberEdit from "./Member/MemberEdit";
 
 const useStyles = makeStyles((theme) => ({
+    root: {
+        maxWidth: 300,
+    },
     button: {
         margin: theme.spacing(1),
     },
 }));
-
 
 const getInitials = (nameString) => {
     const fullName = nameString.split(' ');
@@ -29,20 +28,15 @@ const getInitials = (nameString) => {
     return initials.toUpperCase();
 }
 
-
-export default function MemberComp(props) {
-
+export default function UserComp(props) {
     const classes = useStyles();
-    const [dropDown, setDropDown] = useState([])
     const [subs, setSubs] = useState([])
     const [anchorEl, setAnchorEl] = useState(null);
 
     useEffect(async () => {
-        const respMovies = await MoviesDAL.getDropDown(props.member._id)
         const respSubs = await SubsDAL.getSubs(props.member._id)
-        setDropDown(respMovies.data)
         setSubs(respSubs.data)
-    }, [])
+    }, [props.member._id])
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -56,14 +50,13 @@ export default function MemberComp(props) {
         setAnchorEl(null);
     };
 
-
     return (
-        <Card sx={{maxWidth: 100}}>
+        <Card className={classes.root}>
             <CardHeader
                 avatar={
                     <Avatar aria-label="member"
                             style={{
-                                backgroundColor: props.color
+                                backgroundColor: props.member.color
                             }}>
                         {getInitials(props.member.name)}
                     </Avatar>
@@ -75,6 +68,7 @@ export default function MemberComp(props) {
                 }
                 title={props.member.name}
                 subheader={props.member.email}
+
             />
             <Menu
                 id="simple-menu"
@@ -88,34 +82,25 @@ export default function MemberComp(props) {
                 <MenuItem onClick={handleClose}>Delete</MenuItem>
             </Menu>
             <CardContent>
-                <AddMovieToSub list={dropDown} id={props.member._id}/>
+                <AddSub id={props.member._id}/>
                 <br/>
-
                 {
-                    subs.movies === undefined ? <CircularProgress/> :
-                        subs.movies.map((m, i) => {
-                            return <MovieSubsList key={i} movies={m}/>
+                    subs.movies &&
+                        subs.movies.map((movies, i) => {
+                            return <MemberList key={i} movies={movies}/>
                         })
                 }
-
-                <br/>
-                <Button
-                    variant="outlined"
-                    color="primary"
-                    className={classes.button}
-                    startIcon={<EditIcon/>}
-                >
-                    Edit
-                </Button>
-                <Button
-                    variant="outlined"
-                    color="secondary"
-                    className={classes.button}
-                    startIcon={<DeleteIcon/>}
-                >
-                    Delete
-                </Button>
             </CardContent>
+            <CardActions>
+                <MemberEdit
+                    member={props.member}
+                    callBack={(obj) => props.callBackEdit(obj)}
+                />
+                <MemberDelete
+                    member={props.member}
+                    callBack={(id) => props.callBackDelete(id)}
+                />
+            </CardActions>
 
         </Card>
     );

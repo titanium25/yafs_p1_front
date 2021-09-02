@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
 },
 }));
 
-export default function MovieSubsList(props) {
+export default function MemberList(props) {
     const classes = useStyles();
 
     return (
@@ -42,7 +42,7 @@ export default function MovieSubsList(props) {
                                 component="span"
                                 variant="body2"
                                 className={classes.inline}
-                                color="textPrimary"
+                                color="textSecondary"
                             >
                                 Date: {props.movies.date.split('T')[0]}
                             </Typography>

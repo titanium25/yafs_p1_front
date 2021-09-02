@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -12,7 +12,8 @@ import DateFnsUtils from '@date-io/date-fns';
 import {KeyboardDatePicker, MuiPickersUtilsProvider,} from '@material-ui/pickers';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import SubsDAL from "../adapters/SubsDAL";
+import SubsDAL from "../../../adapters/SubsDAL";
+import MoviesDAL from "../../../adapters/MoviesDAL";
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -25,11 +26,17 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function AddMovieToSub(props) {
+export default function AddSub(props) {
     const classes = useStyles();
+    const [dropDown, setDropDown] = useState([])
     const [open, setOpen] = useState(false);
     const [movie, setMovie] = useState({})
-    const [date, setDate] = useState('')
+    const [date, setDate] = useState(new Date())
+
+    useEffect(async () => {
+        const respList = await MoviesDAL.getDropDown(props.id)
+        setDropDown(respList.data)
+    }, [])
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -45,7 +52,7 @@ export default function AddMovieToSub(props) {
             movieId: movie._id,
             name: movie.name,
             image: movie.image.medium,
-            date: date
+            date: date.toISOString().split("T")[0]
         }
         if (movie && date) {
             await SubsDAL.addSubs(obj)
@@ -57,7 +64,7 @@ export default function AddMovieToSub(props) {
         <div>
             <Button variant="outlined" color="primary" onClick={handleClickOpen}>Subscribe to a new movie</Button>
             <Dialog open={open} onClose={handleClose}>
-                <DialogTitle>Choose the movie name and date</DialogTitle>
+                <DialogTitle>Add subscription</DialogTitle>
                 <DialogContent>
                     <form className={classes.container}>
                         <FormControl className={classes.formControl}>
@@ -66,13 +73,11 @@ export default function AddMovieToSub(props) {
                                 labelId="movie"
                                 value={movie}
                                 onChange={(event) => setMovie(event.target.value)}
-                                input={<Input id="movie"/>}
                             >
                                 <option aria-label="None" value=""/>
                                 {
-                                    props.list.map((m, i) => {
-                                        return <option value={m} key={i}>{m.name}</option>
-
+                                    dropDown.map((movie, i) => {
+                                        return <option value={movie} key={i}>{ movie.name }</option>
                                     })
                                 }
 
@@ -83,8 +88,8 @@ export default function AddMovieToSub(props) {
                                     margin="normal"
                                     id="date-picker-dialog"
                                     label="Date"
-                                    format="MM/dd/yyyy"
-                                    value={new Date('2021-08-27T21:11:54')}
+                                    format="dd/MM/yyyy"
+                                    value={new Date()}
                                     onChange={(date) => setDate(date)}
                                     KeyboardButtonProps={{
                                         'aria-label': 'Set date',

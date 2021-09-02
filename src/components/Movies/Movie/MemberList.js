@@ -27,20 +27,20 @@ export default function MemberList(props) {
     return (
         <List component="nav" className={classes.root} aria-label="members">
             {
-                props.list.map((x, i) => {
+                props.list.map((member, i) => {
                     return (
-                        <div>
+                        <div key={i} >
                             <ListItem key={i} button>
                                 <Avatar aria-label="member"
                                         style={{
-                                            backgroundColor: x.color
+                                            backgroundColor: member.color
                                         }}>
-                                    {getInitials(x.name)}
+                                    {getInitials(member.name)}
                                 </Avatar>
                                 <ListItemText
                                     inset
                                     disableTypography
-                                    primary={<Typography style={{fontSize: '12px'}}>{x.name}</Typography>}
+                                    primary={<Typography style={{fontSize: '12px'}}>{member.name}</Typography>}
                                 />
                             </ListItem>
                             <Divider/>

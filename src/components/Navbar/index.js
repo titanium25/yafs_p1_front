@@ -23,8 +23,8 @@ const Navbar = () => {
                     <NavLink to='/members' >
                         Members
                     </NavLink>
-                    <NavLink to='/contact-us' >
-                        Contact Us
+                    <NavLink to='/users' >
+                        Users
                     </NavLink>
                     <NavLink to='/sign-up' >
                         Sign Up
