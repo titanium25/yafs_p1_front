@@ -18,8 +18,8 @@ const getMovie = (id) => {
     return axios.get(url + '/get/' + id)
 }
 
-const addMovie = (movie) => {
-    return axios.post(url, movie)
+const addMovie = (obj) => {
+    return axios.post(url, obj)
 }
 
 const deleteMovie = (id) => {

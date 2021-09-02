@@ -7,7 +7,6 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DeleteIcon from "@material-ui/icons/Delete";
-import MoviesDAL from "../adapters/MoviesDAL";
 
 export default function MovieDelete(props) {
     const [open, setOpen] = useState(false);
@@ -40,7 +39,8 @@ export default function MovieDelete(props) {
                 <DialogTitle id="form-dialog-title">Are you absolutely sure?</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        This action cannot be undone. This will permanently delete the <b>{props.movie.name}</b> from the database. <br/>
+                        This action cannot be undone. This will permanently delete the <b>{props.movie.name}</b> from
+                        the database. <br/>
                         Please type <b>delete {props.movie.name}</b> to confirm.
                     </DialogContentText>
                     <TextField

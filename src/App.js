@@ -1,7 +1,7 @@
 import './App.css';
+import React from 'react';
 import Navbar from './components/Navbar';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
-import Movies from './pages/Movies'
 import Members from './pages/Members';
 import Contact from './pages/contact';
 import MovieData from "./pages/MovieData";

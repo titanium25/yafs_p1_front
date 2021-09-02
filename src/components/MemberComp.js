@@ -4,7 +4,6 @@ import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import Avatar from '@material-ui/core/Avatar';
-import Typography from '@material-ui/core/Typography';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 
@@ -57,10 +56,6 @@ export default function MemberComp(props) {
         setAnchorEl(null);
     };
 
-    const progress = () => {
-        if(subs.movies === [] )
-       return <CircularProgress />
-    }
 
     return (
         <Card sx={{maxWidth: 100}}>
@@ -75,7 +70,7 @@ export default function MemberComp(props) {
                 }
                 action={
                     <IconButton aria-label="settings" onClick={handleClick}>
-                        <MoreVertIcon />
+                        <MoreVertIcon/>
                     </IconButton>
                 }
                 title={props.member.name}
@@ -93,15 +88,15 @@ export default function MemberComp(props) {
                 <MenuItem onClick={handleClose}>Delete</MenuItem>
             </Menu>
             <CardContent>
-                <AddMovieToSub list={dropDown} id={props.member._id} />
+                <AddMovieToSub list={dropDown} id={props.member._id}/>
                 <br/>
 
-                    {
-                        subs.movies === undefined ? <CircularProgress /> :
+                {
+                    subs.movies === undefined ? <CircularProgress/> :
                         subs.movies.map((m, i) => {
-                            return <MovieSubsList key={i} movies={m} />
+                            return <MovieSubsList key={i} movies={m}/>
                         })
-                    }
+                }
 
                 <br/>
                 <Button

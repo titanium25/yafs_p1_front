@@ -5,9 +5,30 @@ import * as React from "react";
 import {useEffect, useState} from "react";
 import {Grid, TextField} from "@material-ui/core";
 import {ToggleButton, ToggleButtonGroup} from "@material-ui/lab";
+import {makeStyles} from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
+import Divider from "@material-ui/core/Divider";
+import MovieAdd from "../components/MovieAdd";
 
+const useStyles = makeStyles((theme) => ({
+    root: {
+        flexGrow: 1,
+        "& > *": {
+            marginTop: theme.spacing(2),
+            justifyContent: "center",
+            display: 'flex'
+        }
+    },
+    paper: {
+        padding: theme.spacing(2),
+        textAlign: 'center',
+        color: theme.palette.text.secondary,
+    },
+}));
 
 function Movies(props) {
+    const classes = useStyles();
+
     const [movies, setMovies] = useState([])
     const [allMovies, setAllMovies] = useState([])
     const [page, setPage] = useState(1);
@@ -43,28 +64,58 @@ function Movies(props) {
         setAlignment(newAlignment);
     };
 
-    return (
-        <div
-            style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-                height: '90vh'
-            }}>
-            <h1>Movies</h1>
-            <br/>
-            <TextField
-                id="Search"
-                label="Search"
-                variant="outlined"
-                type="Search"
-                onChange={e => setSearch(e.target.value.toLowerCase())}
-            />
+    const handleAdd = async (obj) => {
+        console.log(obj)
 
+        await MoviesDAL.addMovie(
             {
-                search.length > 0 ||
-                <div>
+                name: obj.name,
+                rating: obj.rating,
+                genres: obj.genres,
+                premiered: obj.premiered,
+                image: obj.image
+            })
+        setToggleRerender(!toggleRerender)
+        props.rerenderParentCallback()
+    }
 
-                    <br/>View
+    return (
+        <div className={classes.root}>
+            <Grid
+                container
+                align="center"
+                justifyContent="center"
+                spacing={3}
+                alignItems="center"
+                direction="row"
+            >
+                <Grid item xs={12}>
+                    <Typography variant="h4">Movies</Typography>
+                </Grid>
+
+                <Grid item xs>
+                    <TextField
+                        id="Search"
+                        label="Search"
+                        variant="outlined"
+                        type="Search"
+                        onChange={e => setSearch(e.target.value.toLowerCase())}
+                    />
+
+                </Grid>
+                <Grid item xs={6}>
+                    <Pagination
+                        className={classes.root}
+                        variant="outlined"
+                        shape="rounded"
+                        count={~~(total / size)}
+                        onChange={handleChange}
+                    />
+                </Grid>
+                <Grid item xs>
+
+                    <Typography variant="caption">Movies per page:</Typography>
+                    <br/>
                     <ToggleButtonGroup
                         value={alignment}
                         size={'small'}
@@ -79,14 +130,15 @@ function Movies(props) {
                         <ToggleButton key={3} value="right" aria-label="right aligned"
                                       onClick={() => setSize(12)}>12</ToggleButton>
                     </ToggleButtonGroup>
-                    <br/> <br/>
-                    <Pagination variant="outlined" shape="rounded" count={~~(total / size)} onChange={handleChange}/>
+                </Grid>
+            </Grid>
 
-                </div>
+            <Divider/>
+            <MovieAdd
+                callBack={(obj) => handleAdd(obj)}
+            />
+            <Divider/>
 
-            }
-            <br/>
-            <br/>
             <Grid
                 container
                 spacing={2}
@@ -101,7 +153,10 @@ function Movies(props) {
                                 <MovieComp
                                     key={index}
                                     movie={movie}
-                                    rerenderParentCallback={() => setToggleRerender(!toggleRerender)}
+                                    rerenderParentCallback={() => {
+                                        setToggleRerender(!toggleRerender)
+                                        props.rerenderParentCallback()
+                                    }}
                                 />
                             </Grid>)
                     })

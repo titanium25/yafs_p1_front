@@ -10,10 +10,10 @@ import {
 
 const Navbar = () => {
     return (
-        <>
+
             <Nav>
                 <NavLink to='/' >
-                    <img src={require('../../images/logo_150.png').default} alt='logo' />
+                    <img src={require('../../images/logo_150.png')} alt='logo' />
                 </NavLink>
                 <Bars />
                 <NavMenu>
@@ -34,7 +34,6 @@ const Navbar = () => {
                     <NavBtnLink to='/signin'>Sign In</NavBtnLink>
                 </NavBtn>
             </Nav>
-        </>
     );
 };
 

@@ -50,7 +50,7 @@ function MoviesComp(props) {
         props.rerenderParentCallback()
     }
 
-    const handleDelete = async (id) => {
+    const handleDelete = async () => {
         await MoviesDAL.deleteMovie(props.movie._id)
         props.rerenderParentCallback()
     }
@@ -68,10 +68,10 @@ function MoviesComp(props) {
                         <Typography gutterBottom variant="h5" component="h2">
                             {props.movie.name}
                         </Typography>
-                        <Typography component="legend">Rating {props.movie.rating / 2}</Typography>
-                        <Rating name="rating" value={props.movie.rating / 2} precision={0.5} readOnly/>
+                        <Typography component="legend">Rating {props.movie.rating}</Typography>
+                        <Rating name="rating" value={props.movie.rating} precision={0.5} readOnly/>
                         <Typography variant="body2" color="textSecondary" component="p">
-                            Genres: {props.movie.genres.toString()} <br/>
+                            Genres: {props.movie.genres.toString().replaceAll(",", ", ")} <br/>
                             Premiered: {props.movie.premiered}
                         </Typography>
 
@@ -91,7 +91,7 @@ function MoviesComp(props) {
 
                     <MovieDelete
                         movie={props.movie}
-                        callBack={(obj) => handleDelete(obj)}
+                        callBack={() => handleDelete()}
                     />
 
                 </CardActions>

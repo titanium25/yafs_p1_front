@@ -6,7 +6,6 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import EditIcon from "@material-ui/icons/Edit";
 import {Box} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import {Rating} from "@material-ui/lab";
@@ -14,6 +13,7 @@ import Multiselect from 'multiselect-react-dropdown';
 import axios from "axios";
 import {KeyboardDatePicker, MuiPickersUtilsProvider,} from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
+import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 
 const labels = {
     0.5: 'Useless',
@@ -28,7 +28,7 @@ const labels = {
     5: 'Excellent+',
 };
 
-export default function MovieEdit(props) {
+export default function MovieAdd(props) {
 
     const [open, setOpen] = useState(false);
     const [hover, setHover] = useState(-1);
@@ -36,7 +36,7 @@ export default function MovieEdit(props) {
     const [title, setTitle] = useState('')
     const [rating, setRating] = useState(-1)
     const [genres, setGenres] = useState([])
-    const [date, setDate] = useState('')
+    const [date, setDate] = useState(new Date())
 
     const [options, setOptions] = useState([])
 
@@ -53,21 +53,22 @@ export default function MovieEdit(props) {
         setTitle('')
         setRating(-1)
         setGenres([])
-        setDate('')
+        setDate(new Date())
         setOpen(false);
     };
 
-    const handleEdit = async () => {
+    const handleAdd = async () => {
         const obj = {
-            name: title === '' ? props.movie.name : title,
-            rating: rating === -1 ? props.movie.rating : rating,
-            genres: genres.length === 0 ? props.movie.genres : genres.map(o => o.name),
-            premiered: date === '' ? props.movie.premiered : date.toISOString().split("T")[0]
+            name: title,
+            rating,
+            genres: genres.map(o => o.name),
+            image: { medium: undefined, original: undefined },
+            premiered: date.toISOString().split("T")[0]
         }
         setTitle('')
         setRating(-1)
         setGenres([])
-        setDate('')
+        setDate(new Date())
         props.callBack(obj)
         setOpen(false);
     };
@@ -76,12 +77,11 @@ export default function MovieEdit(props) {
     return (
         <div>
             <Button
-                variant="outlined"
                 color="primary"
                 onClick={handleClickOpen}
-                startIcon={<EditIcon/>}
+                startIcon={<AddCircleOutlineIcon/>}
             >
-                Edit
+                Add new movie
             </Button>
             <Dialog open={open}
                     onClose={handleClose}
@@ -89,23 +89,20 @@ export default function MovieEdit(props) {
                     fullWidth={true}
                     maxWidth={'xs'}
             >
-                <DialogTitle id="form-dialog-title">Edit Movie</DialogTitle>
+                <DialogTitle id="form-dialog-title">Add Movie</DialogTitle>
                 <DialogContent
                     style={{height: '390px'}}>
+
                     <TextField
                         id="outlined-basic"
                         label="Name"
                         variant="outlined"
-                        defaultValue={props.movie.name}
                         onChange={(e) => setTitle(e.target.value)}
-                        fullWidth/> <br/> <br/>
+                        fullWidth
+                    /> <br/> <br/>
 
                     <Multiselect
                         options={options} // Options to display in the dropdown
-                        selectedValues={props.movie.genres.map((v, i) => ({
-                            name: v,
-                            id: i
-                        }))} // Preselected value to persist in dropdown
                         selectionLimit={4} // limit the number of items that can be selected in a dropdown
                         onSelect={(selectedList) => setGenres(selectedList)} // Function will trigger on select event
                         onRemove={(selectedList) => setGenres(selectedList)} // Function will trigger on remove event
@@ -130,7 +127,7 @@ export default function MovieEdit(props) {
                                 margin="normal"
                                 id="date-picker-inline"
                                 label="Premiered date"
-                                value={date === '' ? props.movie.premiered : date}
+                                value={date}
                                 onChange={(date) => setDate(date)}
 
                                 KeyboardButtonProps={{
@@ -139,14 +136,16 @@ export default function MovieEdit(props) {
                             />
                         </MuiPickersUtilsProvider>
                     </Box>
+
                     <Box component="fieldset"
                          mb={3}
                          borderColor="transparent">
                         <Typography
-                            component="legend">Rating {rating === -1 ? props.movie.rating : rating}</Typography>
+                            component="legend">Rating {rating === -1 ? '' : rating}
+                        </Typography>
                         <Rating
                             name="simple-controlled"
-                            value={rating === -1 ? props.movie.rating : rating}
+                            value={rating}
                             precision={0.5}
                             size="large"
                             onChange={(event, newValue) => {
@@ -156,18 +155,15 @@ export default function MovieEdit(props) {
                                 setHover(newHover);
                             }}
                         />
-                        {props.movie.rating !== null &&
-                        <Box ml={2}>{labels[hover !== -1 ? hover : props.movie.rating]}</Box>}
-
+                        {<Box ml={2}>{labels[hover !== -1 ? hover : rating]}</Box>}
                     </Box>
-
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose} color="primary">
                         Cancel
                     </Button>
 
-                    <Button color="secondary" onClick={handleEdit}>Confirm</Button>
+                    <Button color="secondary" onClick={handleAdd}>Add</Button>
 
                 </DialogActions>
             </Dialog>

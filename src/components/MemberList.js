@@ -4,6 +4,8 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from "@material-ui/core/Avatar";
+import Typography from "@material-ui/core/Typography";
+import Divider from "@material-ui/core/Divider";
 
 const getInitials = (nameString) => {
     const fullName = nameString.split(' ');
@@ -15,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
     root: {
         width: '100%',
         maxWidth: 360,
-        backgroundColor: theme.palette.background.paper,
+        backgroundColor: theme.palette.background.paper
     },
 }));
 
@@ -27,15 +29,22 @@ export default function MemberList(props) {
             {
                 props.list.map((x, i) => {
                     return (
-                        <ListItem key={i} button>
-                            <Avatar aria-label="member"
-                                    style={{
-                                        backgroundColor:x.color
-                                    }}>
-                                {getInitials(x.name)}
-                            </Avatar>
-                            <ListItemText inset primary={x.name}/>
-                        </ListItem>
+                        <div>
+                            <ListItem key={i} button>
+                                <Avatar aria-label="member"
+                                        style={{
+                                            backgroundColor: x.color
+                                        }}>
+                                    {getInitials(x.name)}
+                                </Avatar>
+                                <ListItemText
+                                    inset
+                                    disableTypography
+                                    primary={<Typography style={{fontSize: '12px'}}>{x.name}</Typography>}
+                                />
+                            </ListItem>
+                            <Divider/>
+                        </div>
                     )
                 })
             }

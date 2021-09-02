@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from 'react';
 import MoviesDAL from "../adapters/MoviesDAL";
 import Movies from "./Movies";
 
@@ -6,18 +6,15 @@ import Movies from "./Movies";
 export default function MovieData() {
 
     const [movies, setMovies] = useState([])
-    const [page, setPage] = useState(1);
-    const [size, setSize] = useState(8);
-
     const [toggleRerender, setToggleRerender] = useState(false)
 
 
     useEffect(async () => {
 
-        const response = await MoviesDAL.getAllMovies(page, size, true)
+        const response = await MoviesDAL.getAllMovies(1, 1, true)
         setMovies(response.data)
 
-    }, [])
+    }, [toggleRerender])
 
 
     return (
