@@ -7,9 +7,8 @@ import Avatar from '@material-ui/core/Avatar';
 import {makeStyles} from "@material-ui/core/styles";
 import SubsDAL from "../../adapters/SubsDAL";
 import AddSub from './Member/AddSub'
-import MemberList from './Member/MemberList'
-import {CardActions, CircularProgress, IconButton, Menu, MenuItem} from "@material-ui/core";
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+import MovieList from './Member/MovieList'
+import {CardActions} from "@material-ui/core";
 import MemberDelete from "./Member/MemberDelete";
 import MemberEdit from "./Member/MemberEdit";
 
@@ -31,24 +30,17 @@ const getInitials = (nameString) => {
 export default function MemberComp(props) {
     const classes = useStyles();
     const [subs, setSubs] = useState([])
-    const [anchorEl, setAnchorEl] = useState(null);
+    const [toggleRerender, setToggleRerender] = useState(false)
 
     useEffect(async () => {
         const respSubs = await SubsDAL.getSubs(props.member._id)
         setSubs(respSubs.data)
-    }, [props.member._id])
+    }, [toggleRerender])
 
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-
-    const handleSub = () => {
-        setAnchorEl(null);
-    };
+    const handleAddMovie = (obj) => {
+        props.callBackAddMovie(obj)
+        setToggleRerender(!toggleRerender)
+    }
 
     return (
         <Card className={classes.root}>
@@ -61,34 +53,27 @@ export default function MemberComp(props) {
                         {getInitials(props.member.name)}
                     </Avatar>
                 }
-                action={
-                    <IconButton aria-label="settings" onClick={handleClick}>
-                        <MoreVertIcon/>
-                    </IconButton>
-                }
                 title={props.member.name}
                 subheader={props.member.email}
 
             />
-            <Menu
-                id="simple-menu"
-                anchorEl={anchorEl}
-                keepMounted
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
-            >
-                <MenuItem onClick={handleSub}>Subscribe</MenuItem>
-                <MenuItem onClick={handleClose}>Edit</MenuItem>
-                <MenuItem onClick={handleClose}>Delete</MenuItem>
-            </Menu>
             <CardContent>
-                <AddSub id={props.member._id}/>
+                <AddSub
+                    id={props.member._id}
+                    rerenderParentCallback={() => setToggleRerender(!toggleRerender)}
+                    callBackAddMovie={handleAddMovie}
+                />
                 <br/>
                 {
                     subs.movies &&
-                        subs.movies.map((movies, i) => {
-                            return <MemberList key={i} movies={movies}/>
-                        })
+                    subs.movies.map((movie, i) => {
+                        return <MovieList
+                            key={i}
+                            movie={movie}
+                            rerenderParentCallback={() => setToggleRerender(!toggleRerender)}
+                            callBackDeleteMovie={(id) => props.callBackDeleteMovie({movieId: id, subsId: subs._id})}
+                        />
+                    })
                 }
             </CardContent>
             <CardActions>

@@ -6,6 +6,7 @@ import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import MemberAdd from "../components/Members/MemberAdd";
 import {makeStyles} from "@material-ui/core/styles";
+import SubsDAL from "../adapters/SubsDAL";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -28,19 +29,33 @@ function Members() {
         setMembers(response.data)
     }, [toggleRerender])
 
+    // Add member
     const handleAdd = async (obj) => {
         await MembersDAL.addMember(obj)
         setToggleRerender(!toggleRerender)
     }
 
+    // Edit Member
     const handleEdit = async (obj) => {
         await MembersDAL.editMember(obj.id, obj)
         setToggleRerender(!toggleRerender)
     }
 
+    // Delete member and his subscription
     const handleDelete = async (id) => {
-        console.log(id)
         await MembersDAL.deleteMember(id)
+        setToggleRerender(!toggleRerender)
+    }
+
+    // Add movie to subscription
+    const handleAddMovie = async (obj) => {
+        await SubsDAL.addSubs(obj)
+        setToggleRerender(!toggleRerender)
+    }
+
+    // Delete movie from subscription
+    const handleDeleteMovie = async (obj) => {
+        await SubsDAL.updateSubs(obj.movieId, obj.subsId)
         setToggleRerender(!toggleRerender)
     }
 
@@ -82,6 +97,8 @@ function Members() {
                                     rerenderParentCallback={() => setToggleRerender(!toggleRerender)}
                                     callBackEdit={(obj) => handleEdit(obj)}
                                     callBackDelete={(id) => handleDelete(id)}
+                                    callBackAddMovie={(obj) => handleAddMovie(obj)}
+                                    callBackDeleteMovie={(obj) => handleDeleteMovie(obj)}
                                 />
                             </Grid>)
                     })

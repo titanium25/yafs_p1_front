@@ -12,6 +12,7 @@ import MemberList from "./Movie/MemberList";
 import MovieDelete from "./Movie/MovieDelete";
 import MovieEdit from "./Movie/MovieEdit";
 
+
 const useStyles = makeStyles(theme => ({
     root: {
         maxWidth: 250,
@@ -47,7 +48,7 @@ export default function MoviesComp(props) {
     return (
         <div>
             <Card className={classes.root}>
-                <CardActionArea>
+                <CardActionArea href={'/movie/' + props.movie._id}>
                     <CardMedia
                         className={classes.media}
                         image={props.movie.image.medium}
@@ -82,6 +83,7 @@ export default function MoviesComp(props) {
                     />
                 </CardActions>
             </Card>
+
             <br/>
         </div>
     );

@@ -30,7 +30,7 @@ export default function MemberList(props) {
                 props.list.map((member, i) => {
                     return (
                         <div key={i} >
-                            <ListItem key={i} button>
+                            <ListItem key={i} >
                                 <Avatar aria-label="member"
                                         style={{
                                             backgroundColor: member.color

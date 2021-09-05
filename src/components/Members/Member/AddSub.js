@@ -6,13 +6,12 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import InputLabel from '@material-ui/core/InputLabel';
-import Input from '@material-ui/core/Input';
+import SubscriptionsIcon from '@material-ui/icons/Subscriptions';
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import {KeyboardDatePicker, MuiPickersUtilsProvider,} from '@material-ui/pickers';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import SubsDAL from "../../../adapters/SubsDAL";
 import MoviesDAL from "../../../adapters/MoviesDAL";
 
 const useStyles = makeStyles((theme) => ({
@@ -54,15 +53,23 @@ export default function AddSub(props) {
             image: movie.image.medium,
             date: date.toISOString().split("T")[0]
         }
-        if (movie && date) {
-            await SubsDAL.addSubs(obj)
+        if (movie) {
+            props.callBackAddMovie(obj)
+            props.rerenderParentCallback()
             setOpen(false)
         }
     }
 
     return (
         <div>
-            <Button variant="outlined" color="primary" onClick={handleClickOpen}>Subscribe to a new movie</Button>
+            <Button
+                variant="outlined"
+                color="primary"
+                startIcon={<SubscriptionsIcon/>}
+                onClick={handleClickOpen}
+            >
+                Subscribe
+            </Button>
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>Add subscription</DialogTitle>
                 <DialogContent>
@@ -77,7 +84,7 @@ export default function AddSub(props) {
                                 <option aria-label="None" value=""/>
                                 {
                                     dropDown.map((movie, i) => {
-                                        return <option value={movie} key={i}>{ movie.name }</option>
+                                        return <option value={movie} key={i}>{movie.name}</option>
                                     })
                                 }
 
@@ -90,6 +97,7 @@ export default function AddSub(props) {
                                     label="Date"
                                     format="dd/MM/yyyy"
                                     value={new Date()}
+                                    minDate={new Date()}
                                     onChange={(date) => setDate(date)}
                                     KeyboardButtonProps={{
                                         'aria-label': 'Set date',

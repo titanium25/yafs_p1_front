@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Divider from '@material-ui/core/Divider';
@@ -20,22 +20,27 @@ const useStyles = makeStyles((theme) => ({
         display: 'inline',
     },
     large: {
-    width: theme.spacing(6),
-    height: theme.spacing(8),
-},
+        width: theme.spacing(6),
+        height: theme.spacing(8),
+    },
 }));
 
-export default function MemberList(props) {
+export default function MovieList(props) {
     const classes = useStyles();
+
+    const handleDelete = () => {
+        props.callBackDeleteMovie(props.movie.movieId)
+        props.rerenderParentCallback()
+    }
 
     return (
         <List className={classes.root}>
-            <ListItem alignItems="flex-start" button>
+            <ListItem alignItems="flex-start" button onClick={() => window.location.href='/movie/' + props.movie.movieId}>
                 <ListItemAvatar>
-                    <Avatar variant="square" className={classes.large} src={props.movies.image} />
+                    <Avatar variant="square" className={classes.large} src={props.movie.image}/>
                 </ListItemAvatar>
                 <ListItemText
-                    primary={props.movies.name}
+                    primary={props.movie.name}
                     secondary={
                         <React.Fragment>
                             <Typography
@@ -44,19 +49,23 @@ export default function MemberList(props) {
                                 className={classes.inline}
                                 color="textSecondary"
                             >
-                                Date: {props.movies.date.split('T')[0]}
+                                Date: {props.movie.date.split('T')[0]}
                             </Typography>
 
                         </React.Fragment>
                     }
                 />
                 <ListItemSecondaryAction>
-                    <IconButton edge="end" aria-label="delete">
-                        <DeleteIcon />
+                    <IconButton
+                        edge="end"
+                        aria-label="delete"
+                        onClick={handleDelete}
+                    >
+                        <DeleteIcon/>
                     </IconButton>
                 </ListItemSecondaryAction>
             </ListItem>
-            <Divider variant="inset" component="li" />
+            <Divider variant="inset" component="li"/>
 
         </List>
     );

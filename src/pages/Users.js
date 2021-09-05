@@ -1,12 +1,11 @@
 import React, {useEffect, useState} from "react";
-import MembersDAL from "../adapters/MembersDAL";
+import UsersDAL from "../adapters/UsersDAL";
 import {Grid} from "@material-ui/core";
-import MemberComp from "../components/Members/MemberComp";
+import UserComp from "../components/Users/UserComp";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
-import MemberAdd from "../components/Members/MemberAdd";
-import {makeStyles} from "@material-ui/core/styles";
 import UserAdd from "../components/Users/User/UserAdd";
+import {makeStyles} from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -21,27 +20,26 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Users() {
     const classes = useStyles();
-    const [members, setMembers] = useState([])
+    const [users, setUsers] = useState([])
     const [toggleRerender, setToggleRerender] = useState(false)
 
     useEffect(async () => {
-        // const response = await MembersDAL.getAllMembers()
-        // setMembers(response.data)
+        const response = await UsersDAL.getAllUsers()
+        setUsers(response.data)
     }, [toggleRerender])
 
     const handleAdd = async (obj) => {
-        await MembersDAL.addMember(obj)
+        await UsersDAL.addUser(obj)
         setToggleRerender(!toggleRerender)
     }
 
     const handleEdit = async (obj) => {
-        await MembersDAL.editMember(obj.id, obj)
+        await UsersDAL.editUser(obj.id, obj)
         setToggleRerender(!toggleRerender)
     }
 
     const handleDelete = async (id) => {
-        console.log(id)
-        await MembersDAL.deleteMember(id)
+        await UsersDAL.deleteUser(id)
         setToggleRerender(!toggleRerender)
     }
 
@@ -66,28 +64,28 @@ export default function Users() {
             />
             <Divider/>
 
-            {/*<Grid*/}
-            {/*    container*/}
-            {/*    spacing={2}*/}
-            {/*    direction="row"*/}
-            {/*    justifyContent="flex-start"*/}
-            {/*    alignItems="flex-start"*/}
-            {/*>*/}
-            {/*    {*/}
-            {/*        members.map((member, index) => {*/}
-            {/*            return (*/}
-            {/*                <Grid item xs={12} sm={6} md={3} key={index}>*/}
-            {/*                    <MemberComp*/}
-            {/*                        key={index}*/}
-            {/*                        member={member}*/}
-            {/*                        rerenderParentCallback={() => setToggleRerender(!toggleRerender)}*/}
-            {/*                        callBackEdit={(obj) => handleEdit(obj)}*/}
-            {/*                        callBackDelete={(id) => handleDelete(id)}*/}
-            {/*                    />*/}
-            {/*                </Grid>)*/}
-            {/*        })*/}
-            {/*    }*/}
-            {/*</Grid>*/}
+            <Grid
+                container
+                spacing={2}
+                direction="row"
+                justifyContent="flex-start"
+                alignItems="flex-start"
+            >
+                {
+                    users.map((user, index) => {
+                        return (
+                            <Grid item xs={12} sm={6} md={3} key={index}>
+                                <UserComp
+                                    key={index}
+                                    user={user}
+                                    rerenderParentCallback={() => setToggleRerender(!toggleRerender)}
+                                    callBackEdit={(obj) => handleEdit(obj)}
+                                    callBackDelete={(id) => handleDelete(id)}
+                                />
+                            </Grid>)
+                    })
+                }
+            </Grid>
         </div>
     );
 }

@@ -129,7 +129,6 @@ export default function MovieAdd(props) {
                                 label="Premiered date"
                                 value={date}
                                 onChange={(date) => setDate(date)}
-
                                 KeyboardButtonProps={{
                                     'aria-label': 'change date',
                                 }}

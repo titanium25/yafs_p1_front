@@ -18,4 +18,12 @@ const getMemberList = (movieId) => {
     return axios.get(url + '/movie/' + movieId)
 }
 
-export default {getAllSubs, addSubs, getSubs, getMemberList}
+const updateAllSubs = (movieId) => {
+    return axios.put(url + '/' + movieId)
+}
+
+const updateSubs = (movieId, subsId) => {
+    return axios.put(url + '/movie/' + movieId + '/subs/' + subsId)
+}
+
+export default {getAllSubs, addSubs, getSubs, getMemberList, updateAllSubs, updateSubs}
