@@ -93,7 +93,18 @@ function Movie(props) {
                             <div dangerouslySetInnerHTML={{__html: movie.summary}}/>
                         </Typography>
                         <Divider className={classes.divider} light/>
-                        <Comments />
+
+                        <Typography variant="h6" color="text.secondary">
+                        Comments
+                        </Typography>
+
+                        {
+                            movie.comments.map((c,i) => {
+                                return <Comments key={i} comments={c}/>
+
+                            })
+                        }
+
                     </CardContent>
                 </Card>
             }
