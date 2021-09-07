@@ -8,6 +8,7 @@ import Typography from "@material-ui/core/Typography";
 import {makeStyles} from "@material-ui/core/styles";
 import {Rating} from "@material-ui/lab";
 import Divider from "@material-ui/core/Divider";
+import Comments from '../components/Movies/Commnets'
 
 const useStyles = makeStyles(theme => ({
     card: {
@@ -90,8 +91,9 @@ function Movie(props) {
                         <Divider className={classes.divider} light/>
                         <Typography variant="body2" color="text.secondary">
                             <div dangerouslySetInnerHTML={{__html: movie.summary}}/>
-
                         </Typography>
+                        <Divider className={classes.divider} light/>
+                        <Comments />
                     </CardContent>
                 </Card>
             }
