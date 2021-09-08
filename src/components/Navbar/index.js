@@ -13,7 +13,7 @@ const Navbar = () => {
 
             <Nav>
                 <NavLink to='/' >
-                    <img src={require('../../images/logo_150.png')} alt='logo' />
+                    <img src={require('../../images/logo_150.png').default} alt='logo' />
                 </NavLink>
                 <Bars />
                 <NavMenu>
