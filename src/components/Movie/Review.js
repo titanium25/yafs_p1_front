@@ -17,7 +17,7 @@ function Review(props) {
                     <Grid item xs={12} sm container>
                         <Grid item xs container direction="column" spacing={2}>
                             <Grid item xs>
-                                <Typography gutterBottom variant="h6">
+                                <Typography component={'span'} gutterBottom variant="h6">
                                     {props.comments.author}
                                 </Typography>
                                 <Typography variant="body2" color="textSecondary">

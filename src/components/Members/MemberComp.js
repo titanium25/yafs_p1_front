@@ -86,7 +86,6 @@ export default function MemberComp(props) {
                     callBack={(id) => props.callBackDelete(id)}
                 />
             </CardActions>
-
         </Card>
     );
 }

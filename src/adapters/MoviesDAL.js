@@ -30,5 +30,9 @@ const editMovie = (id, obj) => {
     return axios.put(url + '/' + id, obj)
 }
 
+const addReview = (id, obj) => {
+    return axios.put(url + '/review/' + id, obj)
+}
 
-export default {getAllMovies, getTotal, getDropDown, getMovie, addMovie, deleteMovie, editMovie}
+
+export default {getAllMovies, getTotal, getDropDown, getMovie, addMovie, deleteMovie, editMovie, addReview}

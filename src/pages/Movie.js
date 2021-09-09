@@ -1,6 +1,7 @@
 import * as React from "react";
 import {useEffect, useState} from "react";
 import MoviesDAL from "../adapters/MoviesDAL";
+import SubsDAL from "../adapters/SubsDAL";
 import {AppBar, Box, Card, Tab, Tabs} from "@material-ui/core";
 import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
@@ -11,6 +12,7 @@ import Divider from "@material-ui/core/Divider";
 import Review from '../components/Movie/Review'
 import AddReview from "../components/Movie/AddReview";
 import PropTypes from "prop-types";
+import MemberList from "../components/Movies/Movie/MemberList";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -90,7 +92,10 @@ function Movie(props) {
     const {id} = params;
 
     const [movie, setMovie] = useState()
+    const [memberList, setMemberList] = useState([])
     const [value, setValue] = React.useState(0);
+    const [toggleRerender, setToggleRerender] = useState(false)
+
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -98,8 +103,15 @@ function Movie(props) {
 
     useEffect(async () => {
         const respMovie = await MoviesDAL.getMovie(id)
+        const memberList = await SubsDAL.getMemberList(id)
         setMovie(respMovie.data)
-    }, [])
+        setMemberList(memberList.data)
+    }, [toggleRerender])
+
+    const handleReview = async (obj) => {
+        await MoviesDAL.addReview(id, obj)
+        setToggleRerender(!toggleRerender)
+    }
 
     return (
         <div>
@@ -116,6 +128,11 @@ function Movie(props) {
                             >
                                 <Tab label="Summary" {...a11yProps(0)} />
                                 <Tab label="Reviews" {...a11yProps(1)} />
+                                {
+                                    memberList.length > 0 &&
+                                    <Tab label="Subscribers" {...a11yProps(2)} />
+
+                                }
                             </Tabs>
                         </AppBar>
 
@@ -159,8 +176,17 @@ function Movie(props) {
 
                                 })
                             }
-                            <AddReview/>
+                            <AddReview
+                                rerenderParentCallback={() => setToggleRerender(!toggleRerender)}
+                                callBackAddReview={(obj) => handleReview(obj)}
+                            />
 
+                        </TabPanel>
+                        <TabPanel value={value} index={2}>
+                            {
+                                memberList &&
+                                <MemberList list={memberList}/>
+                            }
                         </TabPanel>
 
                     </CardContent>

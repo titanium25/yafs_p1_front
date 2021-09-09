@@ -6,6 +6,7 @@ import Members from './pages/Members';
 import Users from './pages/Users';
 import MovieData from "./pages/MovieData";
 import Movie from "./pages/Movie";
+import { FooterContainer } from './containers/footer'
 
 function App() {
 
@@ -23,6 +24,7 @@ function App() {
                     {/*<Route path='/sign-up' component={SignUp} />*/}
                 </Switch>
             </ div>
+            <FooterContainer />
         </Router>
 
     );
