@@ -2,13 +2,15 @@ import MoviesDAL from '../adapters/MoviesDAL';
 import MovieComp from '../components/Movies/MovieComp'
 import Pagination from '@material-ui/lab/Pagination';
 import * as React from "react";
-import {useEffect, useState} from "react";
+import {useCallback, useContext, useEffect, useState} from "react";
 import {Grid, TextField} from "@material-ui/core";
 import {ToggleButton, ToggleButtonGroup} from "@material-ui/lab";
 import {makeStyles} from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import MovieAdd from "../components/Movies/MovieAdd";
+import {UserContext} from "../context/UserContext";
+import Loader from "../components/Loader";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -36,6 +38,7 @@ function Movies(props) {
     const [search, setSearch] = useState('')
     const [alignment, setAlignment] = useState('center');
     const [toggleRerender, setToggleRerender] = useState(false)
+
 
     useEffect(async () => {
 
@@ -93,6 +96,7 @@ function Movies(props) {
             >
                 <Grid item xs={12}>
                     <Typography variant="h4">Movies</Typography>
+
                 </Grid>
 
                 <Grid item xs>

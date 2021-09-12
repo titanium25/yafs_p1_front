@@ -18,4 +18,5 @@ const editUser = (id, obj) => {
     return axios.put(url + '/' + id, obj)
 }
 
+
 export default {getAllUsers, addUser, deleteUser, editUser}

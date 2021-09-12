@@ -43,7 +43,7 @@ export default function MemberComp(props) {
     }
 
     return (
-        <Card className={classes.root}>
+        <Card className={classes.root} style={{backgroundColor: "#f3f3f3"}}>
             <CardHeader
                 avatar={
                     <Avatar aria-label="member"

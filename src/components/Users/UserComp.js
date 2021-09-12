@@ -4,11 +4,14 @@ import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import Avatar from '@material-ui/core/Avatar';
 import {makeStyles} from "@material-ui/core/styles";
-import {CardActions} from "@material-ui/core";
+import {CardActions, FormControlLabel} from "@material-ui/core";
+import {useState} from "react";
+import UserDelete from './User/UserDelete'
+import UserEdit from './User/UserEdit'
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        maxWidth: 300,
+        maxWidth: 500,
     },
     button: {
         margin: theme.spacing(1),
@@ -24,33 +27,34 @@ const getInitials = (nameString) => {
 export default function UserComp(props) {
     const classes = useStyles();
 
+    const [firstName, setFirstName] = useState(props.user.firstName)
+    const [lastName, setLastName] = useState(props.user.lastName)
+
     return (
         <Card className={classes.root}>
             <CardHeader
                 avatar={
-                    <Avatar aria-label="user"
-                            style={{
-                                backgroundColor: props.user.color
-                            }}>
-                        {getInitials(props.user.name)}
+                    <Avatar aria-label="user">
+                        {getInitials(firstName + ' ' + lastName)}
                     </Avatar>
                 }
-                title={props.user.name}
-                subheader={props.user.email}
+                title={firstName + ' ' + lastName}
+                subheader={props.user.username}
             />
             <CardContent>
-                some content
+                Role: {props.user.isAdmin ? 'Admin' : 'User'} <br/>
+                Status: {props.user.activated ? 'Activated' : 'Dormant'}
+
             </CardContent>
             <CardActions>
-                some actions
-                {/*<userEdit*/}
-                {/*    user={props.user}*/}
-                {/*    callBack={(obj) => props.callBackEdit(obj)}*/}
-                {/*/>*/}
-                {/*<userDelete*/}
-                {/*    user={props.user}*/}
-                {/*    callBack={(id) => props.callBackDelete(id)}*/}
-                {/*/>*/}
+                <UserEdit
+                    user={props.user}
+                    callBack={(obj) => props.callBackEdit(obj)}
+                />
+                <UserDelete
+                    user={props.user}
+                    callBack={(id) => props.callBackDelete(id)}
+                />
             </CardActions>
 
         </Card>

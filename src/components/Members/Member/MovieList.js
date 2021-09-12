@@ -34,7 +34,7 @@ export default function MovieList(props) {
     }
 
     return (
-        <List className={classes.root}>
+        <List className={classes.root} style={{backgroundColor: "#f3f3f3"}}>
             <ListItem alignItems="flex-start" button onClick={() => window.location.href='/movie/' + props.movie.movieId}>
                 <ListItemAvatar>
                     <Avatar variant="square" className={classes.large} src={props.movie.image}/>

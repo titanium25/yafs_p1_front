@@ -5,6 +5,7 @@ import {Box, Paper, TextField} from "@material-ui/core";
 import FormControl from "@material-ui/core/FormControl";
 import {Rating} from "@material-ui/lab";
 import Button from "@material-ui/core/Button";
+import SendIcon from '@material-ui/icons/Send';
 
 const labels = {
     0.5: 'Useless',
@@ -91,6 +92,7 @@ export default function AddReview(props) {
                             <Button
                                 variant="contained"
                                 color="primary"
+                                startIcon={<SendIcon />}
                                 onClick={() => props.callBackAddReview({
                                     author: author,
                                     body: review,

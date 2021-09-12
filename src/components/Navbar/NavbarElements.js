@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 export const Nav = styled.nav`
   background: radial-gradient(circle, rgba(92,39,251,1) 0%, rgba(112,71,247,1) 100%);
-  height: 80px;
+  height: 90px;
   display: flex;
   justify-content: space-between;
   padding: 0.5rem calc((100vw - 1000px) / 2);
@@ -65,7 +65,7 @@ export const NavBtn = styled.nav`
 
 export const NavBtnLink = styled(Link)`
   border-radius: 4px;
-  background: #256ce1;
+  background: #c6fd00;
   padding: 10px 22px;
   color: #fff;
   outline: none;
@@ -73,8 +73,7 @@ export const NavBtnLink = styled(Link)`
   cursor: pointer;
   transition: all 0.2s ease-in-out;
   text-decoration: none;
-  /* Second Nav */
-  margin-left: 24px;
+
   &:hover {
     transition: all 0.2s ease-in-out;
     background: #fff;
