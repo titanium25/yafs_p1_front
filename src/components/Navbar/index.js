@@ -103,9 +103,6 @@ const Navbar = () => {
                     <NavLink to='/users' >
                         Users
                     </NavLink>
-                    <NavLink to='/sign-up' >
-                        Sign Up
-                    </NavLink>
 
                     <div>
                         <IconButton

@@ -7,15 +7,46 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
-
+import {FormControlLabel, FormHelperText, FormLabel, Grid, Paper} from "@material-ui/core";
+import FormControl from "@material-ui/core/FormControl";
+import {Checkbox, FormGroup} from "@blueprintjs/core";
+import {makeStyles} from "@material-ui/core/styles";
+import {Form} from "react-bootstrap";
+const useStyles = makeStyles((theme) => ({
+    root: {
+        display: 'flex',
+    },
+    formControl: {
+        margin: theme.spacing(3),
+    },
+    paper: {
+    padding: theme.spacing(1),
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+},
+}));
 export default function UserAdd(props) {
+    const classes = useStyles();
 
     const [open, setOpen] = useState(false);
-
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
     const [email, setEmail] = useState('')
     const [city, setCity] = useState('')
+    const [state, setState] = React.useState({
+        vm: false,
+        cm: false,
+        dm: false,
+        um: false,
+        vs: false,
+        cs: false,
+        ds: false,
+        us: false
+    });
+
+    const handleChange = (event) => {
+        setState({ ...state, [event.target.name]: event.target.checked });
+    };
 
 
     const handleClickOpen = () => {
@@ -44,10 +75,29 @@ export default function UserAdd(props) {
         setOpen(false);
     };
 
+    function FormRow() {
+        return (
+            <React.Fragment>
+                <Grid item xs={4}>
+                    <FormControlLabel
+                        control={<Checkbox checked={state.vm} onChange={handleChange} name="view movies" />}
+                        label="view movies"
+                    />
+                </Grid>
+                <Grid item xs={4}>
+                    <FormControlLabel
+                        control={<Checkbox checked={state.vs} onChange={handleChange} name="view members" />}
+                        label="view members"
+                    />
+                </Grid>
+            </React.Fragment>
+        );
+    }
 
     return (
         <div>
-            <Button
+
+        <Button
                 color="primary"
                 onClick={handleClickOpen}
                 startIcon={<AddCircleOutlineIcon/>}
@@ -96,6 +146,9 @@ export default function UserAdd(props) {
                         onChange={(e) => setCity(e.target.value)}
                         fullWidth
                     />
+
+
+
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose} color="primary">
