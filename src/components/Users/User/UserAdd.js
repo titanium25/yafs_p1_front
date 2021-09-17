@@ -88,7 +88,7 @@ export default function UserAdd(props) {
         const obj = {
             firstName,
             lastName,
-            email,
+            username: email,
             city,
             state
         }

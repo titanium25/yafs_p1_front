@@ -34,7 +34,12 @@ export default function UserComp(props) {
         <Card className={classes.root}>
             <CardHeader
                 avatar={
-                    <Avatar aria-label="user">
+                    <Avatar
+                        aria-label="user"
+                        style={{
+                            backgroundColor: props.user.color
+                        }}
+                    >
                         {getInitials(firstName + ' ' + lastName)}
                     </Avatar>
                 }
@@ -44,7 +49,7 @@ export default function UserComp(props) {
             <CardContent>
                 Role: {props.user.isAdmin ? 'Admin' : 'User'} <br/>
                 Status: {props.user.activated ? 'Activated' : 'Dormant'}
-
+                {/*View movies: {props.user.state.vm ? 'true' : 'false'}*/}
             </CardContent>
             <CardActions>
                 <UserEdit
