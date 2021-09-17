@@ -7,11 +7,11 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
-import {FormControlLabel, FormHelperText, FormLabel, Grid, Paper} from "@material-ui/core";
-import FormControl from "@material-ui/core/FormControl";
+import {Box, FormControlLabel} from "@material-ui/core";
 import {Checkbox, FormGroup} from "@blueprintjs/core";
 import {makeStyles} from "@material-ui/core/styles";
-import {Form} from "react-bootstrap";
+import * as PropTypes from "prop-types";
+
 const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
@@ -20,11 +20,32 @@ const useStyles = makeStyles((theme) => ({
         margin: theme.spacing(3),
     },
     paper: {
-    padding: theme.spacing(1),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-},
+        padding: theme.spacing(1),
+        textAlign: 'center',
+        color: theme.palette.text.secondary,
+    },
 }));
+
+function Item(props) {
+    const { sx, ...other } = props;
+    return (
+        <Box
+            sx={{
+                p: 1,
+                m: 0,
+                width: 100,
+                borderRadius: 1,
+                textAlign: 'center',
+                fontSize: 15,
+                fontWeight: '400',
+                ...sx,
+            }}
+            {...other}
+        />
+    );
+}
+
+Item.propTypes = {children: PropTypes.node};
 export default function UserAdd(props) {
     const classes = useStyles();
 
@@ -33,7 +54,7 @@ export default function UserAdd(props) {
     const [lastName, setLastName] = useState('')
     const [email, setEmail] = useState('')
     const [city, setCity] = useState('')
-    const [state, setState] = React.useState({
+    const [state, setState] = useState({
         vm: false,
         cm: false,
         dm: false,
@@ -44,8 +65,10 @@ export default function UserAdd(props) {
         us: false
     });
 
+    const { vm, cm, dm, um, vs, cs, ds, us } = state;
+
     const handleChange = (event) => {
-        setState({ ...state, [event.target.name]: event.target.checked });
+        setState({...state, [event.target.name]: event.target.checked});
     };
 
 
@@ -63,9 +86,11 @@ export default function UserAdd(props) {
 
     const handleAdd = async () => {
         const obj = {
-            name: firstName + ' ' + lastName,
+            firstName,
+            lastName,
             email,
-            city
+            city,
+            state
         }
         setFirstName('')
         setLastName('')
@@ -75,29 +100,10 @@ export default function UserAdd(props) {
         setOpen(false);
     };
 
-    function FormRow() {
-        return (
-            <React.Fragment>
-                <Grid item xs={4}>
-                    <FormControlLabel
-                        control={<Checkbox checked={state.vm} onChange={handleChange} name="view movies" />}
-                        label="view movies"
-                    />
-                </Grid>
-                <Grid item xs={4}>
-                    <FormControlLabel
-                        control={<Checkbox checked={state.vs} onChange={handleChange} name="view members" />}
-                        label="view members"
-                    />
-                </Grid>
-            </React.Fragment>
-        );
-    }
-
     return (
         <div>
 
-        <Button
+            <Button
                 color="primary"
                 onClick={handleClickOpen}
                 startIcon={<AddCircleOutlineIcon/>}
@@ -146,8 +152,46 @@ export default function UserAdd(props) {
                         onChange={(e) => setCity(e.target.value)}
                         fullWidth
                     />
-
-
+                    <br/><br/>
+                    <Box sx={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(3, 1fr)',
+                        width: '100%',
+                        columnGap: 0,
+                        rowGap: 0
+                    }}>
+                        <Item></Item>
+                        <Item>Movies</Item>
+                        <Item>Subscriptions</Item>
+                        <Item>View</Item>
+                        <Item>
+                            <Checkbox checked={vm} onChange={handleChange} name="vm" />
+                        </Item>
+                        <Item>
+                            <Checkbox checked={vs} onChange={handleChange} name="vs" />
+                        </Item>
+                        <Item>Create</Item>
+                        <Item>
+                            <Checkbox checked={cm} onChange={handleChange} name="cm" />
+                        </Item>
+                        <Item>
+                            <Checkbox checked={cs} onChange={handleChange} name="cs" />
+                        </Item>
+                        <Item>Update</Item>
+                        <Item>
+                            <Checkbox checked={um} onChange={handleChange} name="um" />
+                        </Item>
+                        <Item>
+                            <Checkbox checked={us} onChange={handleChange} name="us" />
+                        </Item>
+                        <Item>Delete</Item>
+                        <Item>
+                            <Checkbox checked={dm} onChange={handleChange} name="dm" />
+                        </Item>
+                        <Item>
+                            <Checkbox checked={ds} onChange={handleChange} name="ds" />
+                        </Item>
+                    </Box>
 
                 </DialogContent>
                 <DialogActions>

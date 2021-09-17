@@ -7,7 +7,7 @@ const getAllUsers = () => {
 }
 
 const addUser= (obj) => {
-    return axios.post(url, obj)
+    return axios.post(url + '/signup', obj)
 }
 
 const deleteUser= (id) => {
